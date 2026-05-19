@@ -1,0 +1,13 @@
+name = "gefeliciteerdschatje"
+type = "javascript"
+compatibility_date = "2024-05-19"
+
+[env.production]
+
+[build]
+command = "echo 'Static site - no build needed'"
+cwd = "."
+
+[[routes]]
+pattern = "/*"
+zone_name = "example.com"

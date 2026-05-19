@@ -1,0 +1,12 @@
+{
+  "name": "gefeliciteerdschatje",
+  "version": "1.0.0",
+  "description": "Felicitatie website",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'No build needed for static site'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}
