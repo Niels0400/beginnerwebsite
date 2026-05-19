@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Hack Demo</title>
+    <script>
+        function checkToegang() {
+            const cookies = document.cookie.split('; ');
+            const cookieData = cookies.find(row => row.startsWith('Sessie_Sleutel='));
+            const waarde = cookieData ? cookieData.split('=')[1] : null;
+            if (waarde !== atob('SGFjazEyMw==')) {
+                window.location.href = 'index.html';
+            }
+        }
+        checkToegang();
+    </script>
+    <style>
+        * { box-sizing: border-box; }
+        body { background: linear-gradient(135deg, #020202 0%, #090909 100%); color: #00ff00; font-family: 'Courier New', Courier, monospace; text-align: center; margin: 0; padding: 20px; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .container { max-width: 620px; width: 95%; background: rgba(0, 0, 0, 0.92); padding: 40px 20px; border-radius: 15px; border: 2px solid #00ff00; box-shadow: 0 0 50px rgba(0, 255, 0, 0.25); }
+        h2 { color: #00ff00; font-size: 2.5em; margin-bottom: 20px; }
+        .info { color: #ccffcc; font-size: 1.1em; line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>GENERIC HACK DEMO</h2>
+        <p class="info">Je bent nu helemaal in de hack-demo. Deze pagina is vrij van verjaardagscontent.</p>
+        <p class="info">Inspecteer de code, decodeer de sleutel en gebruik hem om door te gaan.</p>
+    </div>
+</body>
+</html>
