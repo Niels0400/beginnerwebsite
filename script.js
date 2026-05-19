@@ -50,8 +50,7 @@ async function hashPassword(password) {
 const hints = [
     'Hint 1: Klik rechtermuis knop en dan Inspect.',
     'Hint 2: Kijk in het script voor een Base64-code.',
-    'Hint 3: Decodeer het in crackstation.net',
-    'Hint 4: De cookies staat hij ook in ;).'
+    'Hint 3: De cookies staat hij ook in ;).'
 ];
 
 let hintIndex = 0;
