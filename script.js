@@ -29,7 +29,23 @@ if (canvas && ctx) {
 
 // De sleutel is gecodeerd in Base64. Decodeer het om de login-cookie te vinden.
 const geheim = 'SGFjazEyMw==';
-document.cookie = 'Sessie_Sleutel=' + atob(geheim) + '; path=/; max-age=3600';
+
+// Functie om een SHA-256 hash te maken
+async function hashPassword(password) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+}
+
+// Hash het wachtwoord en zet het in de cookie
+(async function() {
+    const secretPassword = atob(geheim);
+    const hashedPassword = await hashPassword(secretPassword);
+    document.cookie = 'Sessie_Sleutel=' + hashedPassword + '; path=/; max-age=3600';
+})();
 
 const hints = [
     'Hint 1: Klik rechtermuis knop en dan Inspect.',
@@ -58,13 +74,16 @@ function showHint() {
     }
 }
 
-function checkPassword() {
+async function checkPassword() {
     const entered = document.getElementById('passwordInput').value;
     const cookies = document.cookie.split('; ');
     const cookieData = cookies.find(row => row.startsWith('Sessie_Sleutel='));
-    const secret = cookieData ? cookieData.split('=')[1] : null;
+    const hashedSecret = cookieData ? cookieData.split('=')[1] : null;
+    
+    // Hash het ingevoerde wachtwoord
+    const hashedEntered = await hashPassword(entered);
 
-    if (entered === secret) {
+    if (hashedEntered === hashedSecret) {
         window.location.href = 'bericht.html';
     } else {
         alert('Foute code. Probeer de developer tools.');
