@@ -40,10 +40,15 @@ async function hashPassword(password) {
     return hashHex;
 }
 
+// Globale variabele voor de gehashte sleutel
+let hashedSecretPassword = null;
+let initPromise = null;
+
 // Hash het wachtwoord en zet het in de cookie
-(async function() {
+initPromise = (async function() {
     const secretPassword = atob(geheim);
     const hashedPassword = await hashPassword(secretPassword);
+    hashedSecretPassword = hashedPassword;
     document.cookie = 'Sessie_Sleutel=' + hashedPassword + '; path=/; max-age=3600';
 })();
 
@@ -74,15 +79,22 @@ function showHint() {
 }
 
 async function checkPassword() {
+    // Wacht tot initialisatie klaar is
+    if (initPromise) {
+        await initPromise;
+    }
+    
     const entered = document.getElementById('passwordInput').value;
-    const cookies = document.cookie.split('; ');
-    const cookieData = cookies.find(row => row.startsWith('Sessie_Sleutel='));
-    const hashedSecret = cookieData ? cookieData.split('=')[1] : null;
+    
+    if (!hashedSecretPassword) {
+        alert('Initialisatie mislukt. Laad de pagina opnieuw.');
+        return;
+    }
     
     // Hash het ingevoerde wachtwoord
     const hashedEntered = await hashPassword(entered);
 
-    if (hashedEntered === hashedSecret) {
+    if (hashedEntered === hashedSecretPassword) {
         window.location.href = 'bericht.html';
     } else {
         alert('Foute code. Probeer de developer tools.');
